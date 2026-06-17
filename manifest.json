@@ -1,0 +1,25 @@
+{
+  "name": "Laberinto Giroscopio",
+  "short_name": "Laberinto",
+  "description": "Escapa del laberinto controlando una bola con el giroscopio de tu dispositivo móvil",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f0f1a",
+  "theme_color": "#1a1a2e",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

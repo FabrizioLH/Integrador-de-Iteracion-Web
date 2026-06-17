@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="description" content="Escapa del laberinto controlando una bola con el giroscopio de tu dispositivo">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Laberinto Giroscopio</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Pantalla de inicio -->
+    <section id="screen-start" class="screen active">
+      <header class="game-header">
+        <h1>Laberinto Giroscopio</h1>
+        <p class="subtitle">Inclina tu dispositivo para mover la bola y escapa del laberinto</p>
+      </header>
+
+      <div class="card controls-card">
+        <h2>Configuración de controles</h2>
+        <p class="hint">Selecciona qué ejes del giroscopio controlan el movimiento:</p>
+
+        <div class="control-group">
+          <label for="axis-x">Eje horizontal (izquierda / derecha)</label>
+          <select id="axis-x">
+            <option value="gamma" selected>Gamma — inclinación lateral</option>
+            <option value="beta">Beta — inclinación frontal</option>
+            <option value="alpha">Alpha — rotación brújula</option>
+            <option value="none">Ninguno</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="axis-y">Eje vertical (arriba / abajo)</label>
+          <select id="axis-y">
+            <option value="beta" selected>Beta — inclinación frontal</option>
+            <option value="gamma">Gamma — inclinación lateral</option>
+            <option value="alpha">Alpha — rotación brújula</option>
+            <option value="none">Ninguno</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="sensitivity">Sensibilidad</label>
+          <input type="range" id="sensitivity" min="0.5" max="3" step="0.1" value="1.5">
+          <span id="sensitivity-value">1.5</span>
+        </div>
+
+        <div class="toggle-row">
+          <label class="toggle">
+            <input type="checkbox" id="invert-x">
+            <span>Invertir eje X</span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="invert-y">
+            <span>Invertir eje Y</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card emulator-card">
+        <h2>Emulador (escritorio)</h2>
+        <p class="hint">Sin giroscopio, usa las teclas WASD o las flechas del teclado.</p>
+        <label class="toggle">
+          <input type="checkbox" id="use-keyboard" checked>
+          <span>Activar controles de teclado</span>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button id="btn-enable-gyro" class="btn btn-secondary">
+          Activar giroscopio
+        </button>
+        <button id="btn-start" class="btn btn-primary">
+          Jugar
+        </button>
+      </div>
+
+      <p id="gyro-status" class="status-text">Giroscopio: pendiente de activación</p>
+    </section>
+
+    <!-- Pantalla de juego -->
+    <section id="screen-game" class="screen">
+      <div class="game-hud">
+        <button id="btn-pause" class="btn-icon" aria-label="Pausar">⏸</button>
+        <div class="hud-info">
+          <span id="level-display">Nivel 1</span>
+          <span id="timer-display">00:00</span>
+        </div>
+        <button id="btn-calibrate" class="btn-icon" aria-label="Calibrar">◎</button>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="game-canvas"></canvas>
+      </div>
+
+      <div id="gyro-indicator" class="gyro-indicator">
+        <div class="indicator-dot" id="indicator-dot"></div>
+        <span class="indicator-label">Inclinación</span>
+      </div>
+    </section>
+
+    <!-- Pantalla de victoria -->
+    <section id="screen-win" class="screen">
+      <div class="result-card">
+        <h2>¡Escapaste!</h2>
+        <p id="win-time">Tiempo: 00:00</p>
+        <p id="win-level">Nivel completado: 1</p>
+        <div class="actions">
+          <button id="btn-next-level" class="btn btn-primary">Siguiente nivel</button>
+          <button id="btn-menu" class="btn btn-secondary">Menú principal</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pantalla de pausa -->
+    <section id="screen-pause" class="screen overlay">
+      <div class="result-card">
+        <h2>Pausa</h2>
+        <div class="actions">
+          <button id="btn-resume" class="btn btn-primary">Continuar</button>
+          <button id="btn-restart" class="btn btn-secondary">Reiniciar</button>
+          <button id="btn-quit" class="btn btn-secondary">Menú principal</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/gyroscope.js"></script>
+  <script src="js/maze.js"></script>
+  <script src="js/game.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
